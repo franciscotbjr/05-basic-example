@@ -13,6 +13,10 @@ jobs:
     steps:
       - name: Get code
         uses: actions/checkout@v3
+        with:
+          repository: franciscotbjr/05-basic-example
+          token: ${{ secrets.GH_PAT }} # `GH_PAT` is a secret that contains your PAT
+          path: basic-example
       - name: Initialize Energy Estimation
         uses: green-coding-berlin/eco-ci-energy-estimation@v1
         with:
@@ -49,6 +53,10 @@ jobs:
     steps:
       - name: Get code
         uses: actions/checkout@v3
+        with:
+          repository: franciscotbjr/05-basic-example
+          token: ${{ secrets.GH_PAT }} # `GH_PAT` is a secret that contains your PAT
+          path: basic-example
       - name: Initialize Energy Estimation
         uses: green-coding-berlin/eco-ci-energy-estimation@v1
         with:
