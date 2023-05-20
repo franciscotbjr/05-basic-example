@@ -44,7 +44,6 @@ jobs:
           task: display-results
           send-data: false
           display-graph: false
-          display-table: false
           display-badge: false
   build:
     needs: test
@@ -95,7 +94,6 @@ jobs:
           task: display-results
           send-data: false
           display-graph: false
-          display-table: false
           display-badge: false
   deploy:
     needs: build
@@ -134,7 +132,6 @@ jobs:
           task: display-results
           send-data: false
           display-graph: false
-          display-table: false
           display-badge: false
 
   send-ci-energy-estimation:
