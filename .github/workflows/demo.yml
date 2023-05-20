@@ -15,7 +15,7 @@ jobs:
         uses: green-coding-berlin/eco-ci-energy-estimation@v1
         with:
           task: start-measurement
-          display-graph: true
+          display-graph: false
       - name: Get code
         uses: actions/checkout@v3
       - name: Install dependencies
@@ -37,7 +37,7 @@ jobs:
         with:
           task: display-results
           send-data: false
-          #display-graph: false
+          display-graph: false
   build:
     needs: test
     runs-on: ubuntu-latest
@@ -51,7 +51,7 @@ jobs:
         uses: green-coding-berlin/eco-ci-energy-estimation@v1
         with:
           task: start-measurement
-          display-graph: true
+          display-graph: false
       - name: Get code
         uses: actions/checkout@v3
       - name: Install dependencies
@@ -81,7 +81,7 @@ jobs:
         with:
           task: display-results
           send-data: false
-          #display-graph: false
+          display-graph: false
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -94,7 +94,7 @@ jobs:
         uses: green-coding-berlin/eco-ci-energy-estimation@v1
         with:
           task: start-measurement
-          display-graph: true
+          display-graph: false
       - name: Get build artifacts
         uses: actions/download-artifact@v3
         with:
@@ -118,7 +118,7 @@ jobs:
         with:
           task: display-results
           send-data: false
-          #display-graph: false
+          display-graph: false
 
   send-ci-energy-estimation:
     name: Send Ci Energy Estimation
