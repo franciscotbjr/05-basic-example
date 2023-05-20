@@ -6,7 +6,14 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    outputs:
+      energy-estimation: ${{ toJSON(steps.energyResults.outputs.data-total-json) }}
     steps:
+      - name: Initialize Energy Estimation
+        uses: green-coding-berlin/eco-ci-energy-estimation@v1
+        with:
+          task: start-measurement
+          display-graph: true
       - name: Get code
         uses: actions/checkout@v3
       - name: Install dependencies
@@ -15,12 +22,32 @@ jobs:
         run: npm run lint
       - name: Test code
         run: npm run test
+    
+      - name: Setup Python Measurment
+        uses: green-coding-berlin/eco-ci-energy-estimation@v1
+        with:
+          task: get-measurement
+          label: 'python setup'
+          send-data: false
+      - name: Create Energy Results
+        id: energyResults
+        uses: green-coding-berlin/eco-ci-energy-estimation@v1
+        with:
+          task: display-results
+          send-data: false
+          #display-graph: false
   build:
     needs: test
     runs-on: ubuntu-latest
     outputs:
       script-file: ${{ steps.publish.outputs.script-file }}
+      energy-estimation: ${{ toJSON(steps.energyResults.outputs.data-total-json) }}
     steps:
+      - name: Initialize Energy Estimation
+        uses: green-coding-berlin/eco-ci-energy-estimation@v1
+        with:
+          task: start-measurement
+          display-graph: true
       - name: Get code
         uses: actions/checkout@v3
       - name: Install dependencies
@@ -37,10 +64,31 @@ jobs:
           path: |
             dist
             package.json
+
+      - name: Setup Python Measurment
+        uses: green-coding-berlin/eco-ci-energy-estimation@v1
+        with:
+          task: get-measurement
+          label: 'python setup'
+          send-data: false
+      - name: Create Energy Results
+        id: energyResults
+        uses: green-coding-berlin/eco-ci-energy-estimation@v1
+        with:
+          task: display-results
+          send-data: false
+          #display-graph: false
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    outputs:
+      energy-estimation: ${{ toJSON(steps.energyResults.outputs.data-total-json) }}
     steps:
+      - name: Initialize Energy Estimation
+        uses: green-coding-berlin/eco-ci-energy-estimation@v1
+        with:
+          task: start-measurement
+          display-graph: true
       - name: Get build artifacts
         uses: actions/download-artifact@v3
         with:
@@ -51,3 +99,25 @@ jobs:
         run: echo "${{ needs.build.outputs.script-file }}"
       - name: Deploy
         run: echo "Deploying..."
+
+      - name: Setup Python Measurment
+        uses: green-coding-berlin/eco-ci-energy-estimation@v1
+        with:
+          task: get-measurement
+          label: 'python setup'
+          send-data: false
+      - name: Create Energy Results
+        id: energyResults
+        uses: green-coding-berlin/eco-ci-energy-estimation@v1
+        with:
+          task: display-results
+          send-data: false
+          #display-graph: false
+
+  send-ci-energy-estimation:
+    name: Send Ci Energy Estimation
+    runs-on: ubuntu-latest
+    needs: [test,build,deploy]
+    steps: 
+      - name: Print JSON Energy Results
+        run: echo "[${{ toJSON( needs.test.outputs.energy-estimation ) }}, "${{ toJSON( needs.build.outputs.energy-estimation ) }}", "${{ toJSON( needs.deploy.outputs.energy-estimation ) }}"]"
