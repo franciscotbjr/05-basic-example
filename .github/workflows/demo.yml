@@ -3,6 +3,15 @@ on:
   push:
     branches:
       - main
+
+env:
+  app_name: "carbon-monitoring-service"
+  aws_region: "us-east-1"
+  dockerfilePath: "dockerfiles/Dockerfile"
+  namespace: "green-it"
+  value_stream: "arquitetura"
+  infra: "aws"
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -140,4 +149,4 @@ jobs:
     needs: [test,build,deploy]
     steps: 
       - name: Print JSON Energy Results
-        run: echo "[${{ toJSON( needs.test.outputs.energy-estimation ) }}, "${{ toJSON( needs.build.outputs.energy-estimation ) }}", "${{ toJSON( needs.deploy.outputs.energy-estimation ) }}"]"
+        run: echo "{\"sourceType\":\"CI\", \"application\":\"${{ env.app_name }}\", \"infra\":\"${{ env.infra }}\", \"region\":\"${{ env.aws_region }}\", \"namespace\":\"${{ env.namespace }}\", \"owner\":\"${{ env.value_stream }}\", \"data\":[${{ toJSON( needs.test.outputs.energy-estimation ) }}, "${{ toJSON( needs.build.outputs.energy-estimation ) }}", "${{ toJSON( needs.deploy.outputs.energy-estimation ) }}"]}"
