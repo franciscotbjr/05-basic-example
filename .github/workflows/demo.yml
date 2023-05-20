@@ -18,6 +18,7 @@ jobs:
           display-graph: false
       - name: Get code
         uses: actions/checkout@v3
+        
       - name: Install dependencies
         run: npm ci
       - name: Lint code
@@ -26,13 +27,19 @@ jobs:
         run: npm run test
     
       - name: Setup Python Measurment
-        id: energyResults
         uses: green-coding-berlin/eco-ci-energy-estimation@v1
         with:
           task: get-measurement
           label: 'python setup'
           send-data: false
-
+          
+      - name: Create Energy Results
+        id: energyResults
+        uses: green-coding-berlin/eco-ci-energy-estimation@v1
+        with:
+          task: display-results
+          send-data: false
+          display-graph: false
   build:
     needs: test
     runs-on: ubuntu-latest
@@ -65,13 +72,18 @@ jobs:
             package.json
 
       - name: Setup Python Measurment
-        id: energyResults
         uses: green-coding-berlin/eco-ci-energy-estimation@v1
         with:
           task: get-measurement
           label: 'python setup'
           send-data: false
-
+      - name: Create Energy Results
+        id: energyResults
+        uses: green-coding-berlin/eco-ci-energy-estimation@v1
+        with:
+          task: display-results
+          send-data: false
+          display-graph: false
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -97,12 +109,18 @@ jobs:
         run: echo "Deploying..."
 
       - name: Setup Python Measurment
-        id: energyResults
         uses: green-coding-berlin/eco-ci-energy-estimation@v1
         with:
           task: get-measurement
           label: 'python setup'
           send-data: false
+      - name: Create Energy Results
+        id: energyResults
+        uses: green-coding-berlin/eco-ci-energy-estimation@v1
+        with:
+          task: display-results
+          send-data: false
+          display-graph: false
 
   send-ci-energy-estimation:
     name: Send Ci Energy Estimation
