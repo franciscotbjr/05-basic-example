@@ -18,6 +18,10 @@ jobs:
           display-graph: false
       - name: Get code
         uses: actions/checkout@v3
+        with:
+          repository: franciscotbjr/05-basic-example
+          token: ${{ secrets.GITHUB_TOKEN }} # `GH_PAT` is a secret that contains your PAT
+          path: basic-example
       - name: Install dependencies
         run: npm ci
       - name: Lint code
@@ -54,6 +58,10 @@ jobs:
           display-graph: false
       - name: Get code
         uses: actions/checkout@v3
+        with:
+          repository: franciscotbjr/05-basic-example
+          token: ${{ secrets.GITHUB_TOKEN }} # `GH_PAT` is a secret that contains your PAT
+          path: basic-example
       - name: Install dependencies
         run: npm ci
       - name: Build website
