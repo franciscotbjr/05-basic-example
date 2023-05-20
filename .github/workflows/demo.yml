@@ -5,12 +5,12 @@ on:
       - main
 
 env:
-  app_name: "carbon-monitoring-service"
-  aws_region: "us-east-1"
+  app_name: "teste-monitoring-service"
+  aws_region: "teste"
   dockerfilePath: "dockerfiles/Dockerfile"
-  namespace: "green-it"
-  value_stream: "arquitetura"
-  infra: "aws"
+  namespace: "green-monitoring"
+  value_stream: "demo"
+  infra: "test"
 
 jobs:
   test:
@@ -149,4 +149,4 @@ jobs:
     needs: [test,build,deploy]
     steps: 
       - name: Print JSON Energy Results
-        run: echo "{\"sourceType\":\"CI\", \"application\":\"${{ env.app_name }}\", \"infra\":\"${{ env.infra }}\", \"region\":\"${{ env.aws_region }}\", \"namespace\":\"${{ env.namespace }}\", \"owner\":\"${{ env.value_stream }}\", \"data\":[${{ toJSON( needs.test.outputs.energy-estimation ) }}, "${{ toJSON( needs.build.outputs.energy-estimation ) }}", "${{ toJSON( needs.deploy.outputs.energy-estimation ) }}"]}"
+        run: echo "{\"sourceType\":\"CI\", \"application\":\"${{ env.app_name }}\", \"infra\":\"${{ env.infra }}\", \"region\":\"${{ env.aws_region }}\", \"namespace\":\"${{ env.namespace }}\", \"owner\":\"${{ env.value_stream }}\", \"datetime\":\"$( date +"%Y-%m-%d %T )"\", \"data\":[${{ toJSON( needs.test.outputs.energy-estimation ) }}, "${{ toJSON( needs.build.outputs.energy-estimation ) }}", "${{ toJSON( needs.deploy.outputs.energy-estimation ) }}"]}"
