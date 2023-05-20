@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       energy-estimation: ${{ toJSON(steps.energyResults.outputs.data-total-json) }}
+    permissions:
+      actions: read
     steps:
       - name: Initialize Energy Estimation
         uses: green-coding-berlin/eco-ci-energy-estimation@v1
@@ -42,6 +44,8 @@ jobs:
     outputs:
       script-file: ${{ steps.publish.outputs.script-file }}
       energy-estimation: ${{ toJSON(steps.energyResults.outputs.data-total-json) }}
+    permissions:
+      actions: read
     steps:
       - name: Initialize Energy Estimation
         uses: green-coding-berlin/eco-ci-energy-estimation@v1
@@ -83,6 +87,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       energy-estimation: ${{ toJSON(steps.energyResults.outputs.data-total-json) }}
+    permissions:
+      actions: read
     steps:
       - name: Initialize Energy Estimation
         uses: green-coding-berlin/eco-ci-energy-estimation@v1
