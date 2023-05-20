@@ -7,7 +7,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     outputs:
-      energy-estimation: ${{ toJSON(steps.energyResults.outputs.data-total-json) }}
+      energy-estimation: ${{ toJSON(steps.energyResults.outputs.data-lap-json) }}
     permissions:
       actions: read
     steps:
@@ -31,25 +31,19 @@ jobs:
         run: npm run test
     
       - name: Setup Python Measurment
+        id: energyResults
         uses: green-coding-berlin/eco-ci-energy-estimation@v1
         with:
           task: get-measurement
           label: 'python setup'
           send-data: false
-          
-      - name: Create Energy Results
-        id: energyResults
-        uses: green-coding-berlin/eco-ci-energy-estimation@v1
-        with:
-          task: display-results
-          send-data: false
-          display-graph: false
+
   build:
     needs: test
     runs-on: ubuntu-latest
     outputs:
       script-file: ${{ steps.publish.outputs.script-file }}
-      energy-estimation: ${{ toJSON(steps.energyResults.outputs.data-total-json) }}
+      energy-estimation: ${{ toJSON(steps.energyResults.outputs.data-lap-json) }}
     permissions:
       actions: read
     steps:
@@ -81,23 +75,18 @@ jobs:
             package.json
 
       - name: Setup Python Measurment
+        id: energyResults
         uses: green-coding-berlin/eco-ci-energy-estimation@v1
         with:
           task: get-measurement
           label: 'python setup'
           send-data: false
-      - name: Create Energy Results
-        id: energyResults
-        uses: green-coding-berlin/eco-ci-energy-estimation@v1
-        with:
-          task: display-results
-          send-data: false
-          display-graph: false
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
     outputs:
-      energy-estimation: ${{ toJSON(steps.energyResults.outputs.data-total-json) }}
+      energy-estimation: ${{ toJSON(steps.energyResults.outputs.data-lap-json) }}
     permissions:
       actions: read
     steps:
@@ -118,18 +107,12 @@ jobs:
         run: echo "Deploying..."
 
       - name: Setup Python Measurment
+        id: energyResults
         uses: green-coding-berlin/eco-ci-energy-estimation@v1
         with:
           task: get-measurement
           label: 'python setup'
           send-data: false
-      - name: Create Energy Results
-        id: energyResults
-        uses: green-coding-berlin/eco-ci-energy-estimation@v1
-        with:
-          task: display-results
-          send-data: false
-          display-graph: false
 
   send-ci-energy-estimation:
     name: Send Ci Energy Estimation
