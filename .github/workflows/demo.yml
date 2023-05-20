@@ -26,6 +26,7 @@ jobs:
         run: npm run test
     
       - name: Setup Python Measurment
+        id: energyResults
         uses: green-coding-berlin/eco-ci-energy-estimation@v1
         with:
           task: get-measurement
@@ -64,6 +65,7 @@ jobs:
             package.json
 
       - name: Setup Python Measurment
+        id: energyResults
         uses: green-coding-berlin/eco-ci-energy-estimation@v1
         with:
           task: get-measurement
@@ -95,6 +97,7 @@ jobs:
         run: echo "Deploying..."
 
       - name: Setup Python Measurment
+        id: energyResults
         uses: green-coding-berlin/eco-ci-energy-estimation@v1
         with:
           task: get-measurement
