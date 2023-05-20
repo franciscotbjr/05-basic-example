@@ -149,4 +149,4 @@ jobs:
     needs: [test,build,deploy]
     steps: 
       - name: Print JSON Energy Results
-        run: echo "{\"sourceType\":\"CI\", \"application\":\"${{ env.app_name }}\", \"infra\":\"${{ env.infra }}\", \"region\":\"${{ env.aws_region }}\", \"namespace\":\"${{ env.namespace }}\", \"owner\":\"${{ env.value_stream }}\", \"datetime\":\"${date +"%Y-%m-%d %T}\", \"data\":[${{ toJSON( needs.test.outputs.energy-estimation ) }}, "${{ toJSON( needs.build.outputs.energy-estimation ) }}", "${{ toJSON( needs.deploy.outputs.energy-estimation ) }}"]}"
+        run: echo "{\"sourceType\":\"CI\", \"application\":\"${{ env.app_name }}\", \"infra\":\"${{ env.infra }}\", \"region\":\"${{ env.aws_region }}\", \"namespace\":\"${{ env.namespace }}\", \"owner\":\"${{ env.value_stream }}\", \"data\":[${{ toJSON( needs.test.outputs.energy-estimation ) }}, "${{ toJSON( needs.build.outputs.energy-estimation ) }}", "${{ toJSON( needs.deploy.outputs.energy-estimation ) }}"]}"
