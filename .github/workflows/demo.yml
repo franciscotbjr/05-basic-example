@@ -16,7 +16,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     outputs:
-      energy-estimation: ${{ steps.energyResults.outputs.energy-results }}
+      energy-estimation: ${{ toJson(steps.energyResults.outputs.energy-results) }}
     permissions:
       actions: read
     steps:
@@ -79,7 +79,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       script-file: ${{ steps.publish.outputs.script-file }}
-      energy-estimation: ${{ steps.energyResults.outputs.energy-results }}
+      energy-estimation: ${{ toJson(steps.energyResults.outputs.energy-results) }}
     permissions:
       actions: read
     steps:
@@ -141,7 +141,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     outputs:
-      energy-estimation: ${{ steps.energyResults.outputs.energy-results }}
+      energy-estimation: ${{ toJson(steps.energyResults.outputs.energy-results) }}
     permissions:
       actions: read
     steps:
