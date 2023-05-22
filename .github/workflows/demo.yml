@@ -64,7 +64,7 @@ jobs:
               --arg ej ${arr[4]} \
               --arg pw ${arr[5]} \
               --arg ji ${{github.job}} \
-              '{jobId: $ji, cpuAvgPercent: $cp, energyJoules: $ej, powerAvgWatts: $pw}' )
+              '{jobId: $ji, cpuAvgPercent: $cp, energyJoules: $ej, powerAvgWatts: $pw}' | jq tostring )
 
           echo $ENERGY_RESULTS
           
