@@ -75,7 +75,7 @@ jobs:
 
           echo $ENERGY_RESULTS
           
-          echo "energy-results=$ENERGY_RESULTS" >> $GITHUB_OUTPUT;
+          echo "energy-results=$ENERGY_RESULTS" >> "$GITHUB_OUTPUT"
 
           cat $GITHUB_OUTPUT;
 
