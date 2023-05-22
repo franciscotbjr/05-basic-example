@@ -52,7 +52,6 @@ jobs:
       - name: Echo Prev
         run: echo $ECO_CI_MEASUREMENT_TABLE_LINES
       - name: Create Energy Results
-        id: energyResults
         uses: green-coding-berlin/eco-ci-energy-estimation@v1
         with:
           task: display-results
@@ -60,17 +59,16 @@ jobs:
           display-graph: false
           display-badge: false
       - name: Echo Total
+        id: energyResults
         run: |
           IFS='| ' read -a arr <<< $ECO_CI_MEASUREMENT_TABLE_LINES;
-            
-          for i in ${!arr[@]}; do
-            echo arr[$i] is ${arr[$i]}
-          done
-          echo "{
+          ENERGY_RESULTS= "{
             \"cpuAvgPercent\":\"${arr[3]}\",
             \"energyJoules\":\"${arr[4]}\",
             \"powerAvgWatts\":\"${arr[5]}\",
           }"
+          echo 'energyResults=$ENERGY_RESULTS' >> $GITHUB_OUTPUT
+
   # build:
   #   needs: test
   #   runs-on: ubuntu-latest
@@ -168,10 +166,12 @@ jobs:
   #         display-graph: false
   #         display-badge: false
 
-  # send-ci-energy-estimation:
-  #   name: Send Ci Energy Estimation
-  #   runs-on: ubuntu-latest
-  #   needs: [test,build,deploy]
-  #   steps: 
-  #     - name: Print JSON Energy Results
-  #       run: echo "{\"sourceType\":\"CI\", \"application\":\"${{ env.app_name }}\", \"infra\":\"${{ env.infra }}\", \"region\":\"${{ env.aws_region }}\", \"namespace\":\"${{ env.namespace }}\", \"owner\":\"${{ env.value_stream }}\", \"datetime\":\"$(date +"%Y-%m-%d %T")\", \"data\":[${{ needs.test.outputs.energy-estimation }}, ${{  needs.build.outputs.energy-estimation  }}, ${{  needs.deploy.outputs.energy-estimation }}]}"
+  send-ci-energy-estimation:
+    name: Send Ci Energy Estimation
+    runs-on: ubuntu-latest
+    needs: [test]
+    # needs: [test,build,deploy]
+    steps: 
+      - name: Print JSON Energy Results
+        run: echo ${{ needs.test.outputs.energy-estimation }}
+        # run: echo "{\"sourceType\":\"CI\", \"application\":\"${{ env.app_name }}\", \"infra\":\"${{ env.infra }}\", \"region\":\"${{ env.aws_region }}\", \"namespace\":\"${{ env.namespace }}\", \"owner\":\"${{ env.value_stream }}\", \"datetime\":\"$(date +"%Y-%m-%d %T")\", \"data\":[${{ needs.test.outputs.energy-estimation }}, ${{  needs.build.outputs.energy-estimation  }}, ${{  needs.deploy.outputs.energy-estimation }}]}"
