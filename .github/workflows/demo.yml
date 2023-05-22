@@ -74,6 +74,8 @@ jobs:
           
           echo "energy-results=$ENERGY_RESULTS" >> "$GITHUB_OUTPUT";
 
+          echo "curl -X POST \"http://api...\" -H \'Content-Type: application/json\' -d $ENERGY_RESULTS";
+
   build:
     needs: test
     runs-on: ubuntu-latest
@@ -137,6 +139,8 @@ jobs:
               '{cpuAvgPercent: $cp, energyJoules: $ej, powerAvgWatts: $pw, repository: $rp, workflow: $wf, runId: $ri, jobId: $ji, commitHash: $ch, branch: $br, cpuModel: $mn, cpuMake: $cm}' | jq tostring );
           
           echo "energy-results=$ENERGY_RESULTS" >> "$GITHUB_OUTPUT";
+
+          echo "curl -X POST \"http://api...\" -H \'Content-Type: application/json\' -d $ENERGY_RESULTS";
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -189,7 +193,7 @@ jobs:
           
           echo "energy-results=$ENERGY_RESULTS" >> "$GITHUB_OUTPUT";
 
-          echo -X POST "http://api..." -H 'Content-Type: application/json' -d $ENERGY_RESULTS
+          echo "curl -X POST \"http://api...\" -H \'Content-Type: application/json\' -d $ENERGY_RESULTS";
 
   # send-ci-energy-estimation:
   #   name: Send Ci Energy Estimation
