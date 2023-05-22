@@ -62,11 +62,15 @@ jobs:
         id: energyResults
         run: |
           IFS='| ' read -a arr <<< $ECO_CI_MEASUREMENT_TABLE_LINES;
-          ENERGY_RESULTS= "{
-            \"cpuAvgPercent\":\"${arr[3]}\",
-            \"energyJoules\":\"${arr[4]}\",
-            \"powerAvgWatts\":\"${arr[5]}\",
-          }";
+
+          ENERGY_RESULTS=$( jq -n \
+              --arg cp ${arr[3]} \
+              --arg ej ${arr[4]} \
+              --arg pw ${arr[5]} \
+              '{cpuAvgPercent: $cp, energyJoules: $ej, powerAvgWatts: $pw}' )
+
+          echo $ENERGY_RESULTS
+
           echo 'energyResults=$ENERGY_RESULTS' >> $GITHUB_OUTPUT;
 
   # build:
