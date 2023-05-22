@@ -20,8 +20,8 @@ jobs:
         "{\"jobId\":\"${{ github.job }}\", 
         \"energyResults\": 
           \"{
-              \"value\":\"$value_mJ\",
-              \"unit\":\"$unit\",
+              \"value\":\"$($value_mJ)\",
+              \"unit\":\"$($unit)\",
               \"cpu\":\"$eco_ci_model_name\",
               \"commit_hash\":\"${{ github.sha }}\",
               \"repo\":\"${{ github.repository }}\",
