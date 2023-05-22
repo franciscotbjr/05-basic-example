@@ -62,12 +62,15 @@ jobs:
       - name: Echo Total
         run: |
           IFS='| ' read -a arr <<< $ECO_CI_MEASUREMENT_TABLE_LINES;
-          
+            
           for i in ${!arr[@]}; do
             echo arr[$i] is ${arr[$i]}
           done
-          echo ${arr[0]} ${arr[1]} ${arr[2]} ${arr[3]} ${arr[4]}
-          
+          echo "{
+            \"cpuAvgPercent\":\"${segmentos[3]}\",
+            \"energyJoules\":\"${segmentos[4]}\",
+            \"powerAvgWatts\":\"${segmentos[5]}\",
+          }"
   # build:
   #   needs: test
   #   runs-on: ubuntu-latest
