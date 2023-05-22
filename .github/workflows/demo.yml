@@ -59,7 +59,7 @@ jobs:
           display-graph: false
           display-badge: false
       - name: Echo
-        run: echo "{\"value\":\"$value_mJ\",\"unit\":\"$unit\",\"cpu\":\"$eco_ci_model_name\",\"commit_hash\":\"${{ github.sha }}\",\"repo\":\"${{ github.repository }}\",\"branch\":\"${{ inputs.branch }}\",\"workflow\":\"$ECO_CI_WORKFLOW_ID\",\"run_id\":\"${{ github.run_id }}\",\"project_id\":\"\",\"label\":\"$label\",\"source\":\"github\"}"
+        run: echo $GITHUB_OUTPUT
   build:
     needs: test
     runs-on: ubuntu-latest
