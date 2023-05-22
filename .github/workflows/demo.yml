@@ -77,7 +77,10 @@ jobs:
           
           echo "energy-results=$ENERGY_RESULTS" >> "$GITHUB_OUTPUT"
 
-          echo $GITHUB_OUTPUT
+          echo "TESTE=123" >> "$GITHUB_ENV"
+
+          echo $GITHUB_ENV
+          echo $TESTE
 
   # build:
   #   needs: test
