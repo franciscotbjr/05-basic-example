@@ -68,7 +68,7 @@ jobs:
 
           echo $ENERGY_RESULTS
 
-          echo 'energyResults=$ENERGY_RESULTS' >> $GITHUB_OUTPUT
+          echo 'energyResults=$ENERGY_RESULTS' >> $GITHUB_OUTPUT ';'
 
   # build:
   #   needs: test
