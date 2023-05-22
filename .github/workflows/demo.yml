@@ -39,21 +39,21 @@ jobs:
       - name: Test code
         run: npm run test
     
-      - name: Setup Python Measurment
-        uses: green-coding-berlin/eco-ci-energy-estimation@v1
-        with:
-          task: get-measurement
-          label: 'python setup'
-          send-data: false
-      - name: Echo Prev
-        run: echo $GITHUB_OUTPUT
-      # - name: Create Energy Results
+      # - name: Setup Python Measurment
       #   uses: green-coding-berlin/eco-ci-energy-estimation@v1
       #   with:
-      #     task: display-results
+      #     task: get-measurement
+      #     label: 'python setup'
       #     send-data: false
-      #     display-graph: false
-      #     display-badge: false
+      - name: Echo Prev
+        run: echo $GITHUB_OUTPUT
+      - name: Create Energy Results
+        uses: green-coding-berlin/eco-ci-energy-estimation@v1
+        with:
+          task: display-results
+          send-data: false
+          display-graph: false
+          display-badge: false
       - name: Echo Total
         id: energyResults
         run: |
