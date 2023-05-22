@@ -61,7 +61,7 @@ jobs:
           display-badge: false
       - name: Echo Total
         run: |
-          arr=$(echo $ECO_CI_MEASUREMENT_TABLE_LINES | tr "|" "\n")
+          IFS=', ' read -a arr <<< $ECO_CI_MEASUREMENT_TABLE_LINES;
           
           for i in ${!arr[@]}; do
             echo arr[$i] is ${arr[$i]}
