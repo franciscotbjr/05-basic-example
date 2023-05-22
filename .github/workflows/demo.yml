@@ -64,7 +64,13 @@ jobs:
               --arg ej ${arr[4]} \
               --arg pw ${arr[5]} \
               --arg ji ${{github.job}} \
-              '{jobId: $ji, cpuAvgPercent: $cp, energyJoules: $ej, powerAvgWatts: $pw}' | jq tostring )
+              --arg rp ${{github.repository}} \
+              --arg wf $ECO_CI_WORKFLOW_ID \
+              --arg ri ${{ github.run_id }} \
+              --arg pu $eco_ci_model_name \
+              --arg ch ${{ github.sha }} \
+              '{jobId: $ji, cpuAvgPercent: $cp, energyJoules: $ej, powerAvgWatts: $pw, repository: $rp, workflow: $wf, runId: $ri, cpu: $pu, commitHash: $ch}' \
+               | jq tostring )
 
           echo $ENERGY_RESULTS
           
