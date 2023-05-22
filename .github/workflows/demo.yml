@@ -66,8 +66,8 @@ jobs:
             \"cpuAvgPercent\":\"${arr[3]}\",
             \"energyJoules\":\"${arr[4]}\",
             \"powerAvgWatts\":\"${arr[5]}\",
-          }"
-          echo 'energyResults=$ENERGY_RESULTS' >> $GITHUB_OUTPUT
+          }";
+          echo 'energyResults=$ENERGY_RESULTS' >> $GITHUB_OUTPUT;
 
   # build:
   #   needs: test
