@@ -54,7 +54,7 @@ jobs:
           send-data: false
           display-graph: false
           display-badge: false
-          label: ${{ GITHUB_JOB }}
+          label: ${{ github.job }}
   build:
     needs: test
     runs-on: ubuntu-latest
@@ -105,7 +105,7 @@ jobs:
           send-data: false
           display-graph: false
           display-badge: false
-          label: ${{ GITHUB_JOB }}
+          label: ${{ github.job }}
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -144,7 +144,7 @@ jobs:
           send-data: false
           display-graph: false
           display-badge: false
-          label: ${{ GITHUB_JOB }}
+          label: ${{ github.job }}
 
   send-ci-energy-estimation:
     name: Send Ci Energy Estimation
