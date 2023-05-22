@@ -17,10 +17,10 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       energy-estimation: |
-        "{
+        \"{
           \"jobId\":\"${{ github.job }}\", 
           \"energyResults\": ${{ toJSON(steps.energyResults.outputs.data-total-json) }} 
-        }"
+        }\"
     permissions:
       actions: read
     steps:
@@ -49,7 +49,8 @@ jobs:
           task: get-measurement
           label: 'python setup'
           send-data: false
-          
+      - name: Echo Prev
+        run: echo $GITHUB_OUTPUT
       - name: Create Energy Results
         id: energyResults
         uses: green-coding-berlin/eco-ci-energy-estimation@v1
@@ -58,7 +59,7 @@ jobs:
           send-data: false
           display-graph: false
           display-badge: false
-      - name: Echo
+      - name: Echo Total
         run: echo $GITHUB_OUTPUT
   build:
     needs: test
@@ -66,10 +67,10 @@ jobs:
     outputs:
       script-file: ${{ steps.publish.outputs.script-file }}
       energy-estimation: |
-        "{
+        \"{
           \"jobId\":\"${{ github.job }}\", 
           \"energyResults\": ${{ toJSON(steps.energyResults.outputs.data-total-json) }} 
-        }"
+        }\"
     permissions:
       actions: read
     steps:
@@ -119,10 +120,10 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       energy-estimation: |
-        "{
+        \"{
           \"jobId\":\"${{ github.job }}\", 
           \"energyResults\": ${{ toJSON(steps.energyResults.outputs.data-total-json) }} 
-        }"
+        }\"
     permissions:
       actions: read
     steps:
