@@ -16,7 +16,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     outputs:
-      energy-estimation: ${{ toJSON(steps.energyResults.outputs.data-total-json) }}
+      energy-estimation: "{\"job\":\"CI\", \"energyResults\": ${{ toJSON(steps.energyResults.outputs.data-total-json) }} ]}"
     permissions:
       actions: read
     steps:
