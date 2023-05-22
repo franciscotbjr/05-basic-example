@@ -50,7 +50,7 @@ jobs:
           label: 'python setup'
           send-data: false
       - name: Echo Prev
-        run: echo $GITHUB_OUTPUT
+        run: echo $ECO_CI_MEASUREMENT_TABLE_LINES
       - name: Create Energy Results
         id: energyResults
         uses: green-coding-berlin/eco-ci-energy-estimation@v1
@@ -60,7 +60,7 @@ jobs:
           display-graph: false
           display-badge: false
       - name: Echo Total
-        run: echo $GITHUB_OUTPUT
+        run: echo $ECO_CI_MEASUREMENT_TABLE_LINES
   build:
     needs: test
     runs-on: ubuntu-latest
