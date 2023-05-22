@@ -19,7 +19,7 @@ jobs:
       energy-estimation: |
         "{
           \"jobId\":\"${{ github.job }}\", 
-          \"energyResults\": ${{ toJSON(steps.energyResults.outputs.energyResults) }} 
+          \"energyResults\": ${{ steps.energyResults.outputs.energyResults }}
         }"
     permissions:
       actions: read
