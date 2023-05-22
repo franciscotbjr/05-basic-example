@@ -19,7 +19,7 @@ jobs:
       energy-estimation: |
         \"{
           \"jobId\":\"${{ github.job }}\", 
-          \"energyResults\": ${{ toJSON(steps.energyResults.outputs.data-total-json) }} 
+          \"energyResults\": ${{ toJSON(steps.energyResults.outputs.energyResults) }} 
         }\"
     permissions:
       actions: read
@@ -51,13 +51,13 @@ jobs:
           send-data: false
       - name: Echo Prev
         run: echo $ECO_CI_MEASUREMENT_TABLE_LINES
-      - name: Create Energy Results
-        uses: green-coding-berlin/eco-ci-energy-estimation@v1
-        with:
-          task: display-results
-          send-data: false
-          display-graph: false
-          display-badge: false
+      # - name: Create Energy Results
+      #   uses: green-coding-berlin/eco-ci-energy-estimation@v1
+      #   with:
+      #     task: display-results
+      #     send-data: false
+      #     display-graph: false
+      #     display-badge: false
       - name: Echo Total
         id: energyResults
         run: |
@@ -71,7 +71,7 @@ jobs:
 
           echo $ENERGY_RESULTS
 
-          echo 'energyResults=$ENERGY_RESULTS' >> $GITHUB_OUTPUT;
+          echo 'energyResults=$ENERGY_RESULTS' >> $GITHUB_OUTPUT ';'
 
   # build:
   #   needs: test
