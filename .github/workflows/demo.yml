@@ -17,15 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       energy-estimation: |
-        \"{
-          \"jobId\":\"${{ github.job }}\", 
-          \"repository\": \"${{ toJson(steps.energyResults.outputs.data-total-json).repository }}\", 
-          \"branch\": \"${{ steps.energyResults.outputs.data-total-json.branch }}\", 
-          \"workflow\": \"${{ steps.energyResults.outputs.data-total-json.workflow }}\", 
-          \"runId\": \"${{ steps.energyResults.outputs.data-total-jsonrun_id }}\", 
-          \"cpuAvgPercent\": ${{ steps.energyResults.outputs.data-total-json.cpu_avg_percent }}, 
-          \"energyJoules\": ${{ steps.energyResults.outputs.data-total-json.energy_joules }}, 
-          \"powerAvgWatts\": ${{ steps.energyResults.outputs.data-total-json.power_avg_watts }}
+        "{\"jobId\":\"${{ github.job }}\", 
+        \"energyResults\": 
+          ${{ fromJSON(steps.energyResults.outputs.data-total-json.energy_joules) }} 
         }\"
     permissions:
       actions: read
@@ -69,7 +63,11 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       script-file: ${{ steps.publish.outputs.script-file }}
-      energy-estimation: ${{ toJSON(steps.energyResults.outputs.data-total-json) }}
+      energy-estimation: |
+        "{\"jobId\":\"${{ github.job }}\", 
+        \"energyResults\": 
+          ${{ toJSON(steps.energyResults.outputs.data-total-json) }} 
+        }\"
     permissions:
       actions: read
     steps:
@@ -118,7 +116,11 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     outputs:
-      energy-estimation: ${{ toJSON(steps.energyResults.outputs.data-total-json) }}
+      energy-estimation: |
+        "{\"jobId\":\"${{ github.job }}\", 
+        \"energyResults\": 
+          ${{ toJSON(steps.energyResults.outputs.data-total-json) }} 
+        }\"
     permissions:
       actions: read
     steps:
