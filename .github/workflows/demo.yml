@@ -68,9 +68,9 @@ jobs:
               echo "> [$seg]"
           done
           echo "{
-            \"cpuAvgPercent\":\"$segmentos[2]\",
-            \"energyJoules\":\"$segmentos[3]\",
-            \"powerAvgWatts\":\"$segmentos[4]\",
+            \"cpuAvgPercent\":\"${segmentos[2]}\",
+            \"energyJoules\":\"${segmentos[3]}\",
+            \"powerAvgWatts\":\"${segmentos[4]}\",
           }"
   # build:
   #   needs: test
