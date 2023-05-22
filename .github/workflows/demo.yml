@@ -70,7 +70,8 @@ jobs:
               --arg mn $ECO_CI_MODEL_NAME \
               --arg cm $ECO_CI_CPU_MAKE \
               --arg ch ${{ github.sha }} \
-              '{jobId: $ji, cpuAvgPercent: $cp, energyJoules: $ej, powerAvgWatts: $pw, repository: $rp, workflow: $wf, runId: $ri, cpuModel: $mn, cpuMake: $cm, commitHash: $ch}' | jq tostring )
+              --arg br ${{ github.ref_name }} \
+              '{jobId: $ji, cpuAvgPercent: $cp, energyJoules: $ej, powerAvgWatts: $pw, repository: $rp, workflow: $wf, runId: $ri, cpuModel: $mn, cpuMake: $cm, commitHash: $ch, branch: $br}' | jq tostring )
 
           echo $ENERGY_RESULTS
           
