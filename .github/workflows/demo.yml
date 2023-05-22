@@ -67,9 +67,9 @@ jobs:
             echo arr[$i] is ${arr[$i]}
           done
           echo "{
-            \"cpuAvgPercent\":\"${segmentos[3]}\",
-            \"energyJoules\":\"${segmentos[4]}\",
-            \"powerAvgWatts\":\"${segmentos[5]}\",
+            \"cpuAvgPercent\":\"${arr[3]}\",
+            \"energyJoules\":\"${arr[4]}\",
+            \"powerAvgWatts\":\"${arr[5]}\",
           }"
   # build:
   #   needs: test
