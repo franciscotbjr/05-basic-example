@@ -17,20 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       energy-estimation: |
-        "{\"jobId\":\"${{ github.job }}\", 
-        \"energyResults\": 
-          \"{
-              \"value\":\"$($value_mJ)\",
-              \"unit\":\"$($unit)\",
-              \"cpu\":\"$eco_ci_model_name\",
-              \"commit_hash\":\"${{ github.sha }}\",
-              \"repo\":\"${{ github.repository }}\",
-              \"workflow\":\"$ECO_CI_WORKFLOW_ID\",
-              \"run_id\":\"${{ github.run_id }}\",
-              \"project_id\":\"\",
-              \"label\":\"$label\", 
-              \"source\":\"github\"
-          }\" 
+        "{
+          \"jobId\":\"${{ github.job }}\", 
+          \"energyResults\": ${{ toJSON(steps.energyResults.outputs.data-total-json) }} 
         }"
     permissions:
       actions: read
@@ -75,10 +64,10 @@ jobs:
     outputs:
       script-file: ${{ steps.publish.outputs.script-file }}
       energy-estimation: |
-        "{\"jobId\":\"${{ github.job }}\", 
-        \"energyResults\": 
-          ${{ toJSON(steps.energyResults.outputs.data-total-json) }} 
-        }\"
+        "{
+          \"jobId\":\"${{ github.job }}\", 
+          \"energyResults\": ${{ toJSON(steps.energyResults.outputs.data-total-json) }} 
+        }"
     permissions:
       actions: read
     steps:
@@ -128,10 +117,10 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       energy-estimation: |
-        "{\"jobId\":\"${{ github.job }}\", 
-        \"energyResults\": 
-          ${{ toJSON(steps.energyResults.outputs.data-total-json) }} 
-        }\"
+        "{
+          \"jobId\":\"${{ github.job }}\", 
+          \"energyResults\": ${{ toJSON(steps.energyResults.outputs.data-total-json) }} 
+        }"
     permissions:
       actions: read
     steps:
