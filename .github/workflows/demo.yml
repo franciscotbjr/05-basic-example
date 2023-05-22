@@ -17,10 +17,10 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       energy-estimation: |
-        \"{
+        "{
           \"jobId\":\"${{ github.job }}\", 
           \"energyResults\": ${{ toJSON(steps.energyResults.outputs.energyResults) }} 
-        }\"
+        }"
     permissions:
       actions: read
     steps:
