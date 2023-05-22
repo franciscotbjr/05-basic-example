@@ -61,13 +61,13 @@ jobs:
           display-badge: false
       - name: Echo Total
         run: |
-          segmentos=$(echo $ECO_CI_MEASUREMENT_TABLE_LINES | tr "|")
+          arr=$(echo $ECO_CI_MEASUREMENT_TABLE_LINES | tr "|" "\n")
           
-          for seg in $segmentos
-          do
-              echo "> [$seg]"
+          for i in ${!arr[@]}; do
+            echo arr[$i] is ${arr[$i]}
           done
-          echo ${segmentos[2]} ${segmentos[3]} ${segmentos[4]}
+          echo ${arr[0]} ${arr[1]} ${arr[2]} ${arr[3]} ${arr[4]}
+          
   # build:
   #   needs: test
   #   runs-on: ubuntu-latest
