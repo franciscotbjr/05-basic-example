@@ -16,11 +16,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     outputs:
-      energy-estimation: |
-        "{
-          \"jobId\":\"${{ github.job }}\", 
-          \"energyResults\": ${{ steps.energyResults.outputs.energyResults }}
-        }"
+      energy-estimation: ${{ steps.energyResults.outputs.energyResults }}
     permissions:
       actions: read
     steps:
@@ -67,11 +63,12 @@ jobs:
               --arg cp ${arr[3]} \
               --arg ej ${arr[4]} \
               --arg pw ${arr[5]} \
-              '{cpuAvgPercent: $cp, energyJoules: $ej, powerAvgWatts: $pw}' )
+              --arg ji ${github.job} \
+              '{jobId: $ji, cpuAvgPercent: $cp, energyJoules: $ej, powerAvgWatts: $pw}' )
 
           echo $ENERGY_RESULTS
 
-          echo 'energyResults=$ENERGY_RESULTS' >> $GITHUB_OUTPUT ';'
+          echo 'energyResults=$ENERGY_RESULTS' >> $GITHUB_OUTPUT
 
   # build:
   #   needs: test
@@ -178,4 +175,4 @@ jobs:
     steps: 
       - name: Print JSON Energy Results
         run: echo ${{ needs.test.outputs.energy-estimation }}
-        # run: echo "{\"sourceType\":\"CI\", \"application\":\"${{ env.app_name }}\", \"infra\":\"${{ env.infra }}\", \"region\":\"${{ env.aws_region }}\", \"namespace\":\"${{ env.namespace }}\", \"owner\":\"${{ env.value_stream }}\", \"datetime\":\"$(date +"%Y-%m-%d %T")\", \"data\":[${{ needs.test.outputs.energy-estimation }}, ${{  needs.build.outputs.energy-estimation  }}, ${{  needs.deploy.outputs.energy-estimation }}]}"
+# run: echo "{\"sourceType\":\"CI\", \"application\":\"${{ env.app_name }}\", \"infra\":\"${{ env.infra }}\", \"region\":\"${{ env.aws_region }}\", \"namespace\":\"${{ env.namespace }}\", \"owner\":\"${{ env.value_stream }}\", \"datetime\":\"$(date +"%Y-%m-%d %T")\", \"data\":[${{ needs.test.outputs.energy-estimation }}, ${{  needs.build.outputs.energy-estimation  }}, ${{  needs.deploy.outputs.energy-estimation }}]}"
