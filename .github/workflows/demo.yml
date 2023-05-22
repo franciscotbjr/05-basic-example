@@ -63,7 +63,7 @@ jobs:
               --arg cp ${arr[3]} \
               --arg ej ${arr[4]} \
               --arg pw ${arr[5]} \
-              --arg ji ${github.job} \
+              --arg ji ${{github.job}} \
               '{jobId: $ji, cpuAvgPercent: $cp, energyJoules: $ej, powerAvgWatts: $pw}' )
 
           echo $ENERGY_RESULTS
