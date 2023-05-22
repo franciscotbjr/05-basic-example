@@ -19,14 +19,14 @@ jobs:
       energy-estimation: |
         \"{
           \"jobId\":\"${{ github.job }}\", 
-          \"repository\": \"${{ steps.energyResults.outputs.data-total-json.repository }}\", 
+          \"repository\": \"${{ toJson(steps.energyResults.outputs.data-total-json).repository }}\", 
           \"branch\": \"${{ steps.energyResults.outputs.data-total-json.branch }}\", 
           \"workflow\": \"${{ steps.energyResults.outputs.data-total-json.workflow }}\", 
           \"runId\": \"${{ steps.energyResults.outputs.data-total-jsonrun_id }}\", 
           \"cpuAvgPercent\": ${{ steps.energyResults.outputs.data-total-json.cpu_avg_percent }}, 
           \"energyJoules\": ${{ steps.energyResults.outputs.data-total-json.energy_joules }}, 
           \"powerAvgWatts\": ${{ steps.energyResults.outputs.data-total-json.power_avg_watts }}
-        }"
+        }\"
     permissions:
       actions: read
     steps:
