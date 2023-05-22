@@ -19,8 +19,19 @@ jobs:
       energy-estimation: |
         "{\"jobId\":\"${{ github.job }}\", 
         \"energyResults\": 
-          ${{ fromJSON(steps.energyResults.outputs.data-total-json.energy_joules) }} 
-        }\"
+          \"{
+              \"value\":\"$value_mJ\",
+              \"unit\":\"$unit\",
+              \"cpu\":\"$eco_ci_model_name\",
+              \"commit_hash\":\"${{ github.sha }}\",
+              \"repo\":\"${{ github.repository }}\",
+              \"workflow\":\"$ECO_CI_WORKFLOW_ID\",
+              \"run_id\":\"${{ github.run_id }}\",
+              \"project_id\":\"\",
+              \"label\":\"$label\", 
+              \"source\":\"github\"
+          }\" 
+        }"
     permissions:
       actions: read
     steps:
