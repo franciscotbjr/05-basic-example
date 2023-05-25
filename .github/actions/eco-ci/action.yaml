@@ -65,7 +65,7 @@ runs:
             --arg cm $ECO_CI_CPU_MAKE \
             --arg ch ${{ github.sha }} \
             --arg br ${{ github.ref_name }} \
-            '{cpuAvgPercent: $cp, energyJoules: $ej, powerAvgWatts: $pw, repository: $rp, workflow: $wf, runId: $ri, jobId: $ji, commitHash: $ch, branch: $br, cpuModel: $mn, cpuMake: $cm}' )
+            '{cpuAvgPercent: $cp, energyJoules: $ej, powerAvgWatts: $pw, repository: $rp, workflow: $wf, runId: $ri, jobId: $ji, commitHash: $ch, branch: $br, cpuModel: $mn, cpuMake: $cm}' | jq tostring )
 
         # ENERGY_RESULTS=$( jq -n \
         #     --arg st ${{ inputs.source-type }} \
