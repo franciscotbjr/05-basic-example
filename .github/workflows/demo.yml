@@ -71,180 +71,180 @@ jobs:
 
           echo "curl -X POST \"http://api...\" -H \'Content-Type: application/json\' -d $ENERGY_RESULTS";
 
-  # test:
-  #   needs: lint
-  #   runs-on: ubuntu-latest
-  #   outputs:
-  #     energy-estimation: ${{ steps.energyResults.outputs.energy-results }}
-  #   permissions:
-  #     actions: read
-  #   steps:
-  #     - name: Initialize Energy Estimation
-  #       uses: green-coding-berlin/eco-ci-energy-estimation@v1
-  #       with:
-  #         task: start-measurement
-  #         display-graph: false
-  #     - name: Get code
-  #       uses: actions/checkout@v3
+  test:
+    needs: lint
+    runs-on: ubuntu-latest
+    outputs:
+      energy-estimation: ${{ steps.energyResults.outputs.energy-results }}
+    permissions:
+      actions: read
+    steps:
+      - name: Initialize Energy Estimation
+        uses: green-coding-berlin/eco-ci-energy-estimation@v1
+        with:
+          task: start-measurement
+          display-graph: false
+      - name: Get code
+        uses: actions/checkout@v3
 
-  #     - name: Test code
-  #       run: npm run test
+      - name: Load & cache dependencies
+        uses: ./.github/actions/cached-deps
+
+      - name: Test code
+        run: npm run test
     
-  #     - name: Setup Python Measurment
-  #       uses: green-coding-berlin/eco-ci-energy-estimation@v1
-  #       with:
-  #         task: get-measurement
-  #         label: 'python setup'
-  #         send-data: false
+      - name: Setup Python Measurment
+        uses: green-coding-berlin/eco-ci-energy-estimation@v1
+        with:
+          task: get-measurement
+          label: 'python setup'
+          send-data: false
 
-  #     # - name: Create Energy Results
-  #     #   uses: green-coding-berlin/eco-ci-energy-estimation@v1
-  #     #   with:
-  #     #     task: display-results
-  #     #     send-data: false
-  #     #     display-graph: false
-  #     #     display-badge: false
-  #     - name: Create Energy Results
-  #       id: energyResults
-  #       run: |
-  #         IFS='| ' read -a arr <<< $ECO_CI_MEASUREMENT_TABLE_LINES;
+      # - name: Create Energy Results
+      #   uses: green-coding-berlin/eco-ci-energy-estimation@v1
+      #   with:
+      #     task: display-results
+      #     send-data: false
+      #     display-graph: false
+      #     display-badge: false
+      - name: Create Energy Results
+        id: energyResults
+        run: |
+          IFS='| ' read -a arr <<< $ECO_CI_MEASUREMENT_TABLE_LINES;
 
-  #         ENERGY_RESULTS=$( jq -n \
-  #             --arg cp ${arr[3]} \
-  #             --arg ej ${arr[4]} \
-  #             --arg pw ${arr[5]} \
-  #             --arg ji ${{github.job}} \
-  #             --arg rp ${{github.repository}} \
-  #             --arg wf $ECO_CI_WORKFLOW_ID \
-  #             --arg ri ${{ github.run_id }} \
-  #             --arg mn $ECO_CI_MODEL_NAME \
-  #             --arg cm $ECO_CI_CPU_MAKE \
-  #             --arg ch ${{ github.sha }} \
-  #             --arg br ${{ github.ref_name }} \
-  #             '{cpuAvgPercent: $cp, energyJoules: $ej, powerAvgWatts: $pw, repository: $rp, workflow: $wf, runId: $ri, jobId: $ji, commitHash: $ch, branch: $br, cpuModel: $mn, cpuMake: $cm}' | jq tostring );
+          ENERGY_RESULTS=$( jq -n \
+              --arg cp ${arr[3]} \
+              --arg ej ${arr[4]} \
+              --arg pw ${arr[5]} \
+              --arg ji ${{github.job}} \
+              --arg rp ${{github.repository}} \
+              --arg wf $ECO_CI_WORKFLOW_ID \
+              --arg ri ${{ github.run_id }} \
+              --arg mn $ECO_CI_MODEL_NAME \
+              --arg cm $ECO_CI_CPU_MAKE \
+              --arg ch ${{ github.sha }} \
+              --arg br ${{ github.ref_name }} \
+              '{cpuAvgPercent: $cp, energyJoules: $ej, powerAvgWatts: $pw, repository: $rp, workflow: $wf, runId: $ri, jobId: $ji, commitHash: $ch, branch: $br, cpuModel: $mn, cpuMake: $cm}' | jq tostring );
           
-  #         echo "energy-results=$ENERGY_RESULTS" >> "$GITHUB_OUTPUT";
+          echo "energy-results=$ENERGY_RESULTS" >> "$GITHUB_OUTPUT";
 
-  #         echo "curl -X POST \"http://api...\" -H \'Content-Type: application/json\' -d $ENERGY_RESULTS";
+          echo "curl -X POST \"http://api...\" -H \'Content-Type: application/json\' -d $ENERGY_RESULTS";
 
-  # build:
-  #   needs: test
-  #   runs-on: ubuntu-latest
-  #   outputs:
-  #     script-file: ${{ steps.publish.outputs.script-file }}
-  #     energy-estimation: ${{ steps.energyResults.outputs.energy-results }}
-  #   permissions:
-  #     actions: read
-  #   steps:
-  #     - name: Initialize Energy Estimation
-  #       uses: green-coding-berlin/eco-ci-energy-estimation@v1
-  #       with:
-  #         task: start-measurement
-  #         display-graph: false
-  #     - name: Get code
-  #       uses: actions/checkout@v3
-  #     - name: Cache dependencies
-  #       uses: actions/cache@v3
-  #       with:
-  #         path: ~/.npm
-  #         key: deps-node-modudes-${{ hashFiles('**/package-lock.json') }} 
-  #     - name: Install dependencies
-  #       run: npm ci
-  #     - name: Build website
-  #       run: npm run build
-  #     - name: Publish JS filename
-  #       id: publish
-  #       run: find dist/assets/*.js -type f -execdir echo 'script-file={}' >> $GITHUB_OUTPUT ';'
-  #     - name:  Upload artifacts
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: dist-files
-  #         path: |
-  #           dist
-  #           package.json
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    outputs:
+      script-file: ${{ steps.publish.outputs.script-file }}
+      energy-estimation: ${{ steps.energyResults.outputs.energy-results }}
+    permissions:
+      actions: read
+    steps:
+      - name: Initialize Energy Estimation
+        uses: green-coding-berlin/eco-ci-energy-estimation@v1
+        with:
+          task: start-measurement
+          display-graph: false
+      - name: Get code
+        uses: actions/checkout@v3
 
-  #     - name: Setup Python Measurment
-  #       uses: green-coding-berlin/eco-ci-energy-estimation@v1
-  #       with:
-  #         task: get-measurement
-  #         label: 'python setup'
-  #         send-data: false
+      - name: Load & cache dependencies
+        uses: ./.github/actions/cached-deps
+        
+      - name: Build website
+        run: npm run build
+      - name: Publish JS filename
+        id: publish
+        run: find dist/assets/*.js -type f -execdir echo 'script-file={}' >> $GITHUB_OUTPUT ';'
+      - name:  Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-files
+          path: |
+            dist
+            package.json
 
-  #     - name: Create Energy Results
-  #       id: energyResults
-  #       run: |
-  #         IFS='| ' read -a arr <<< $ECO_CI_MEASUREMENT_TABLE_LINES;
+      - name: Setup Python Measurment
+        uses: green-coding-berlin/eco-ci-energy-estimation@v1
+        with:
+          task: get-measurement
+          label: 'python setup'
+          send-data: false
 
-  #         ENERGY_RESULTS=$( jq -n \
-  #             --arg cp ${arr[3]} \
-  #             --arg ej ${arr[4]} \
-  #             --arg pw ${arr[5]} \
-  #             --arg ji ${{github.job}} \
-  #             --arg rp ${{github.repository}} \
-  #             --arg wf $ECO_CI_WORKFLOW_ID \
-  #             --arg ri ${{ github.run_id }} \
-  #             --arg mn $ECO_CI_MODEL_NAME \
-  #             --arg cm $ECO_CI_CPU_MAKE \
-  #             --arg ch ${{ github.sha }} \
-  #             --arg br ${{ github.ref_name }} \
-  #             '{cpuAvgPercent: $cp, energyJoules: $ej, powerAvgWatts: $pw, repository: $rp, workflow: $wf, runId: $ri, jobId: $ji, commitHash: $ch, branch: $br, cpuModel: $mn, cpuMake: $cm}' | jq tostring );
+      - name: Create Energy Results
+        id: energyResults
+        run: |
+          IFS='| ' read -a arr <<< $ECO_CI_MEASUREMENT_TABLE_LINES;
+
+          ENERGY_RESULTS=$( jq -n \
+              --arg cp ${arr[3]} \
+              --arg ej ${arr[4]} \
+              --arg pw ${arr[5]} \
+              --arg ji ${{github.job}} \
+              --arg rp ${{github.repository}} \
+              --arg wf $ECO_CI_WORKFLOW_ID \
+              --arg ri ${{ github.run_id }} \
+              --arg mn $ECO_CI_MODEL_NAME \
+              --arg cm $ECO_CI_CPU_MAKE \
+              --arg ch ${{ github.sha }} \
+              --arg br ${{ github.ref_name }} \
+              '{cpuAvgPercent: $cp, energyJoules: $ej, powerAvgWatts: $pw, repository: $rp, workflow: $wf, runId: $ri, jobId: $ji, commitHash: $ch, branch: $br, cpuModel: $mn, cpuMake: $cm}' | jq tostring );
           
-  #         echo "energy-results=$ENERGY_RESULTS" >> "$GITHUB_OUTPUT";
+          echo "energy-results=$ENERGY_RESULTS" >> "$GITHUB_OUTPUT";
 
-  #         echo "curl -X POST \"http://api...\" -H \'Content-Type: application/json\' -d $ENERGY_RESULTS";
-  # deploy:
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   outputs:
-  #     energy-estimation: ${{ steps.energyResults.outputs.energy-results }}
-  #   permissions:
-  #     actions: read
-  #   steps:
-  #     - name: Initialize Energy Estimation
-  #       uses: green-coding-berlin/eco-ci-energy-estimation@v1
-  #       with:
-  #         task: start-measurement
-  #         display-graph: false
-  #     - name: Get build artifacts
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #         name: dist-files
-  #     - name: Output contents
-  #       run: ls
-  #     - name: Output filename
-  #       run: echo "${{ needs.build.outputs.script-file }}"
-  #     - name: Deploy
-  #       run: echo "Deploying..."
+          echo "curl -X POST \"http://api...\" -H \'Content-Type: application/json\' -d $ENERGY_RESULTS";
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    outputs:
+      energy-estimation: ${{ steps.energyResults.outputs.energy-results }}
+    permissions:
+      actions: read
+    steps:
+      - name: Initialize Energy Estimation
+        uses: green-coding-berlin/eco-ci-energy-estimation@v1
+        with:
+          task: start-measurement
+          display-graph: false
+      - name: Get build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-files
+      - name: Output contents
+        run: ls
+      - name: Output filename
+        run: echo "${{ needs.build.outputs.script-file }}"
+      - name: Deploy
+        run: echo "Deploying..."
 
-  #     - name: Setup Python Measurment
-  #       uses: green-coding-berlin/eco-ci-energy-estimation@v1
-  #       with:
-  #         task: get-measurement
-  #         label: 'python setup'
-  #         send-data: false
+      - name: Setup Python Measurment
+        uses: green-coding-berlin/eco-ci-energy-estimation@v1
+        with:
+          task: get-measurement
+          label: 'python setup'
+          send-data: false
 
-  #     - name: Create Energy Results
-  #       id: energyResults
-  #       run: |
-  #         IFS='| ' read -a arr <<< $ECO_CI_MEASUREMENT_TABLE_LINES;
+      - name: Create Energy Results
+        id: energyResults
+        run: |
+          IFS='| ' read -a arr <<< $ECO_CI_MEASUREMENT_TABLE_LINES;
 
-  #         ENERGY_RESULTS=$( jq -n \
-  #             --arg cp ${arr[3]} \
-  #             --arg ej ${arr[4]} \
-  #             --arg pw ${arr[5]} \
-  #             --arg ji ${{github.job}} \
-  #             --arg rp ${{github.repository}} \
-  #             --arg wf $ECO_CI_WORKFLOW_ID \
-  #             --arg ri ${{ github.run_id }} \
-  #             --arg mn $ECO_CI_MODEL_NAME \
-  #             --arg cm $ECO_CI_CPU_MAKE \
-  #             --arg ch ${{ github.sha }} \
-  #             --arg br ${{ github.ref_name }} \
-  #             '{cpuAvgPercent: $cp, energyJoules: $ej, powerAvgWatts: $pw, repository: $rp, workflow: $wf, runId: $ri, jobId: $ji, commitHash: $ch, branch: $br, cpuModel: $mn, cpuMake: $cm}' | jq tostring );
+          ENERGY_RESULTS=$( jq -n \
+              --arg cp ${arr[3]} \
+              --arg ej ${arr[4]} \
+              --arg pw ${arr[5]} \
+              --arg ji ${{github.job}} \
+              --arg rp ${{github.repository}} \
+              --arg wf $ECO_CI_WORKFLOW_ID \
+              --arg ri ${{ github.run_id }} \
+              --arg mn $ECO_CI_MODEL_NAME \
+              --arg cm $ECO_CI_CPU_MAKE \
+              --arg ch ${{ github.sha }} \
+              --arg br ${{ github.ref_name }} \
+              '{cpuAvgPercent: $cp, energyJoules: $ej, powerAvgWatts: $pw, repository: $rp, workflow: $wf, runId: $ri, jobId: $ji, commitHash: $ch, branch: $br, cpuModel: $mn, cpuMake: $cm}' | jq tostring );
           
-  #         echo "energy-results=$ENERGY_RESULTS" >> "$GITHUB_OUTPUT";
+          echo "energy-results=$ENERGY_RESULTS" >> "$GITHUB_OUTPUT";
 
-  #         echo "curl -X POST \"http://api...\" -H \'Content-Type: application/json\' -d $ENERGY_RESULTS";
+          echo "curl -X POST \"http://api...\" -H \'Content-Type: application/json\' -d $ENERGY_RESULTS";
 
   # send-ci-energy-estimation:
   #   name: Send Ci Energy Estimation
