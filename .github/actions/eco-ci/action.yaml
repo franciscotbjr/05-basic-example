@@ -51,31 +51,32 @@ runs:
       id: energy-results
       shell: bash
       run: |
-        DATE_TIME=$(date +"%Y-%m-%d-%H\:%M\:%S");
+        DATE_TIME=$(date +"%Y-%m-%d %H:%M:%S");
 
         echo $DATE_TIME;
 
         IFS='| ' read -a arr <<< $ECO_CI_MEASUREMENT_TABLE_LINES;
 
         ENERGY_RESULTS="\"{ \
-          \"sourceType\":\"github\", \
-          \"application\":\"github\", \
-          \"infra\":\"github\", \
-          \"region\":\"github\", \
-          \"namespace\":\"github\", \
-          \"datetime\":\"github\", \
+          \"sourceType\":\"${{ inputs.source-type }}\", \
+          \"application\":\"${{ inputs.application }}\", \
+          \"infra\":\"${{ inputs.infra }}\", \
+          \"region\":\"${{ inputs.region }}\", \
+          \"namespace\":\"${{ inputs.namespace }}\", \
+          \"owner\":\"${{ inputs.owner }}\", \
+          \"datetime\":\"$DATE_TIME\", \
           \"data\":{ \
-            \"cpuAvgPercent\":\"github\", \
-            \"energyJoules\":\"github\", \
-            \"powerAvgWatts\":\"github\", \
-            \"repository\":\"github\", \
-            \"workflow\":\"github\", \
-            \"runId\":\"github\", \
-            \"jobId\":\"github\", \
-            \"commitHash\":\"github\", \
-            \"branch\":\"github\", \
-            \"cpuModel\":\"github\", \
-            \"cpuMake\":\"github\", \
+            \"cpuAvgPercent\":\"${arr[3]}\", \
+            \"energyJoules\":\"${arr[4]}\", \
+            \"powerAvgWatts\":\"${arr[5]}\", \
+            \"repository\":\"${{github.repository}}\", \
+            \"workflow\":\"$ECO_CI_WORKFLOW_ID\", \
+            \"runId\":\"${{ github.run_id }}\", \
+            \"jobId\":\"${{github.job}}\", \
+            \"commitHash\":\"${{ github.sha }}\", \
+            \"branch\":\"${{ github.ref_name }}\", \
+            \"cpuModel\":\"$ECO_CI_MODEL_NAME\", \
+            \"cpuMake\":\"$ECO_CI_CPU_MAKE\", \
           } \
         }\""
 
