@@ -38,7 +38,7 @@ runs:
         label: "python setup"
         send-data: false
 
-    - name: Create Energy Results
+    - name: Display Results
       if: inputs.display-results == 'true'
       uses: green-coding-berlin/eco-ci-energy-estimation@v1
       with:
@@ -47,7 +47,7 @@ runs:
         display-graph: false
         display-badge: false
 
-    - name: Create Energy Results
+    - name: Send Energy Results
       id: energy-results
       shell: bash
       run: |
