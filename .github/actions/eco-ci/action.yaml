@@ -76,7 +76,7 @@ runs:
             \"branch\":\"github\", \
             \"cpuModel\":\"github\", \
             \"cpuMake\":\"github\", \
-          }
+          } \
         }\""
 
         echo $ENERGY_RESULTS;
