@@ -53,7 +53,7 @@ runs:
       run: |
         IFS='| ' read -a arr <<< $ECO_CI_MEASUREMENT_TABLE_LINES
 
-        ENERGY_RESULTS=$( jq -n \
+        ENERGY_ESTIMATION=$( jq -n \
             --arg cp ${arr[3]} \
             --arg ej ${arr[4]} \
             --arg pw ${arr[5]} \
@@ -67,16 +67,18 @@ runs:
             --arg br ${{ github.ref_name }} \
             '{cpuAvgPercent: $cp, energyJoules: $ej, powerAvgWatts: $pw, repository: $rp, workflow: $wf, runId: $ri, jobId: $ji, commitHash: $ch, branch: $br, cpuModel: $mn, cpuMake: $cm}' | jq tostring )
 
-        # ENERGY_RESULTS=$( jq -n \
-        #     --arg st ${{ inputs.source-type }} \
-        #     --arg ap ${{ inputs.application }} \
-        #     --arg nf ${{ inputs.infra }} \
-        #     --arg rg ${{ inputs.region }} \
-        #     --arg ns ${{ inputs.namespace }} \
-        #     --arg wn ${{ inputs.owner }} \
-        #     --arg dt $(date +"%Y-%m-%d %T") \
-        #     --arg da $ENERGY_ESTIMATION \
-        #     '{sourceType: $st, application: $ap, infra: $nf, region: $rg, namespace: $ns, owner: $wn, datetime: $dt, data: $da}' | jq tostring )
+        ENERGY_RESULTS=$( jq -n \
+            --arg st ${{ inputs.source-type }} \
+            --arg ap ${{ inputs.application }} \
+            --arg nf ${{ inputs.infra }} \
+            --arg rg ${{ inputs.region }} \
+            --arg ns ${{ inputs.namespace }} \
+            --arg wn ${{ inputs.owner }} \
+            --arg dt $(date +"%Y-%m-%d %T") \
+            --arg da $ENERGY_ESTIMATION \
+            '{sourceType: $st, application: $ap, infra: $nf, region: $rg, namespace: $ns, owner: $wn, datetime: $dt, data: $da}' | jq tostring )
+
+        echo $ENERGY_RESULTS
 
         echo "energy-results=$ENERGY_RESULTS" >> "$GITHUB_OUTPUT"
 
