@@ -57,9 +57,9 @@ runs:
 
         IFS='| ' read -a arr <<< $ECO_CI_MEASUREMENT_TABLE_LINES;
 
-        ENERGY_RESULTS="{
+        ENERGY_RESULTS="\"{
             \"source\":\"github\"
-          }"
+          }\""
 
         echo $ENERGY_RESULTS;
 
