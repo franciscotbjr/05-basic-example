@@ -64,7 +64,7 @@ runs:
           \"region\":\"github\", \
           \"namespace\":\"github\", \
           \"datetime\":\"github\", \
-          \"data\":\"{ \
+          \"data\":{ \
             \"cpuAvgPercent\":\"github\", \
             \"energyJoules\":\"github\", \
             \"powerAvgWatts\":\"github\", \
@@ -76,7 +76,7 @@ runs:
             \"branch\":\"github\", \
             \"cpuModel\":\"github\", \
             \"cpuMake\":\"github\", \
-          }\"
+          }
         }\""
 
         echo $ENERGY_RESULTS;
