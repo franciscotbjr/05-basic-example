@@ -56,7 +56,7 @@ runs:
       id: energy-results
       shell: bash
       run: |
-        DATE_TIME=$(date +"%Y-%m-%d %H\:%M\:%S");
+        DATE_TIME=$(date +"%Y-%m-%d-%H\:%M\:%S");
 
         echo $DATE_TIME;
 
@@ -69,7 +69,7 @@ runs:
             --arg rg ${{ inputs.region }} \
             --arg ns ${{ inputs.namespace }} \
             --arg wn ${{ inputs.owner }} \
-            --arg dt \"$DATE_TIME\" \
+            --arg dt $DATE_TIME \
             --arg cp ${arr[3]} \
             --arg ej ${arr[4]} \
             --arg pw ${arr[5]} \
