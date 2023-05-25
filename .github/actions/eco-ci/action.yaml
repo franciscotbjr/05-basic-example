@@ -64,7 +64,7 @@ runs:
             --arg rg ${{ inputs.region }} \
             --arg ns ${{ inputs.namespace }} \
             --arg wn ${{ inputs.owner }} \
-            --arg dt \"$DATE_TIME\" \
+            --arg dt $DATE_TIME \
             --arg cp ${arr[3]} \
             --arg ej ${arr[4]} \
             --arg pw ${arr[5]} \
