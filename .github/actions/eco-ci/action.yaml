@@ -1,9 +1,33 @@
 name: "Build eco-ci results"
 description: "Create Energy Results"
+inputs:
+  source-type:
+    description: "The source of the event"
+    required: false
+    default: "CI"
+  display-results:
+    description: "Whether to print table results in pipe"
+    required: false
+    default: "false"
+  application:
+    description: "The application name"
+    required: true
+  namespace:
+    description: "The namespace of the application."
+    required: true
+  owner:
+    description: "The owner of the application."
+    required: true
+  infra:
+    description: "The infra enviorment. Ex: onpremises, aws, azure, gcp"
+    required: true
+  region:
+    description: "The region of infra enviorment."
+    required: true
 outputs:
   energy-results:
     description: "The created Energy Results JSON"
-    value: ${{ steps.energyResults.outputs.energy-results }}
+    value: ${{ steps.energy-results.outputs.energy-results }}
 runs:
   using: "composite"
   steps:
@@ -14,15 +38,17 @@ runs:
         label: "python setup"
         send-data: false
 
-    # - name: Create Energy Results
-    #   uses: green-coding-berlin/eco-ci-energy-estimation@v1
-    #   with:
-    #     task: display-results
-    #     send-data: false
-    #     display-graph: false
-    #     display-badge: false
     - name: Create Energy Results
-      id: energyResults
+      if: inputs.display-results == 'true'
+      uses: green-coding-berlin/eco-ci-energy-estimation@v1
+      with:
+        task: display-results
+        send-data: false
+        display-graph: false
+        display-badge: false
+
+    - name: Create Energy Results
+      id: energy-results
       shell: bash
       run: |
         IFS='| ' read -a arr <<< $ECO_CI_MEASUREMENT_TABLE_LINES;
