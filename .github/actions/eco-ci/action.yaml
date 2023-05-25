@@ -51,7 +51,7 @@ runs:
       id: energy-results
       shell: bash
       run: |
-        DATE_TIME=$(date +"%Y%m%d-%H%M%S");
+        DATE_TIME=$(date +"%Y-%m-%d %H/%M/%S");
 
         echo $DATE_TIME;
 
