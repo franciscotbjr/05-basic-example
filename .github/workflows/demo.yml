@@ -50,113 +50,113 @@ jobs:
           infra: ${{ env.infra }}
           region: ${{ env.aws_region }}
 
-  # test:
-  #   needs: lint
-  #   runs-on: ubuntu-latest
-  #   outputs:
-  #     energy-estimation: ${{ steps.energy-results.outputs.energy-results }}
-  #   permissions:
-  #     actions: read
-  #   steps:
-  #     - name: Initialize Energy Estimation
-  #       uses: green-coding-berlin/eco-ci-energy-estimation@v1
-  #       with:
-  #         task: start-measurement
-  #         display-graph: false
-  #     - name: Get code
-  #       uses: actions/checkout@v3
+  test:
+    needs: lint
+    runs-on: ubuntu-latest
+    outputs:
+      energy-estimation: ${{ steps.energy-results.outputs.energy-results }}
+    permissions:
+      actions: read
+    steps:
+      - name: Initialize Energy Estimation
+        uses: green-coding-berlin/eco-ci-energy-estimation@v1
+        with:
+          task: start-measurement
+          display-graph: false
+      - name: Get code
+        uses: actions/checkout@v3
 
-  #     - name: Load & cache dependencies
-  #       uses: ./.github/actions/cached-deps
+      - name: Load & cache dependencies
+        uses: ./.github/actions/cached-deps
 
-  #     - name: Test code
-  #       run: npm run test
+      - name: Test code
+        run: npm run test
 
-  #     - name: "Create Energy Results"
-  #       id: energy-results
-  #       uses: ./.github/actions/eco-ci
-  #       with:
-  #         application: ${{ env.app_name }}
-  #         namespace: ${{ env.namespace }}
-  #         owner: ${{ env.value_stream }}
-  #         infra: ${{ env.infra }}
-  #         region: ${{ env.aws_region }}
+      - name: "Create Energy Results"
+        id: energy-results
+        uses: ./.github/actions/eco-ci
+        with:
+          application: ${{ env.app_name }}
+          namespace: ${{ env.namespace }}
+          owner: ${{ env.value_stream }}
+          infra: ${{ env.infra }}
+          region: ${{ env.aws_region }}
 
-  # build:
-  #   needs: test
-  #   runs-on: ubuntu-latest
-  #   outputs:
-  #     script-file: ${{ steps.publish.outputs.script-file }}
-  #     energy-estimation: ${{ steps.energy-results.outputs.energy-results }}
-  #   permissions:
-  #     actions: read
-  #   steps:
-  #     - name: Initialize Energy Estimation
-  #       uses: green-coding-berlin/eco-ci-energy-estimation@v1
-  #       with:
-  #         task: start-measurement
-  #         display-graph: false
-  #     - name: Get code
-  #       uses: actions/checkout@v3
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    outputs:
+      script-file: ${{ steps.publish.outputs.script-file }}
+      energy-estimation: ${{ steps.energy-results.outputs.energy-results }}
+    permissions:
+      actions: read
+    steps:
+      - name: Initialize Energy Estimation
+        uses: green-coding-berlin/eco-ci-energy-estimation@v1
+        with:
+          task: start-measurement
+          display-graph: false
+      - name: Get code
+        uses: actions/checkout@v3
 
-  #     - name: Load & cache dependencies
-  #       uses: ./.github/actions/cached-deps
+      - name: Load & cache dependencies
+        uses: ./.github/actions/cached-deps
 
-  #     - name: Build website
-  #       run: npm run build
-  #     - name: Publish JS filename
-  #       id: publish
-  #       run: find dist/assets/*.js -type f -execdir echo 'script-file={}' >> $GITHUB_OUTPUT ';'
-  #     - name:  Upload artifacts
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: dist-files
-  #         path: |
-  #           dist
-  #           package.json
+      - name: Build website
+        run: npm run build
+      - name: Publish JS filename
+        id: publish
+        run: find dist/assets/*.js -type f -execdir echo 'script-file={}' >> $GITHUB_OUTPUT ';'
+      - name:  Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-files
+          path: |
+            dist
+            package.json
 
-  #     - name: "Create Energy Results"
-  #       id: energy-results
-  #       uses: ./.github/actions/eco-ci
-  #       with:
-  #         application: ${{ env.app_name }}
-  #         namespace: ${{ env.namespace }}
-  #         owner: ${{ env.value_stream }}
-  #         infra: ${{ env.infra }}
-  #         region: ${{ env.aws_region }}
+      - name: "Create Energy Results"
+        id: energy-results
+        uses: ./.github/actions/eco-ci
+        with:
+          application: ${{ env.app_name }}
+          namespace: ${{ env.namespace }}
+          owner: ${{ env.value_stream }}
+          infra: ${{ env.infra }}
+          region: ${{ env.aws_region }}
 
-  # deploy:
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   outputs:
-  #     energy-estimation: ${{ steps.energy-results.outputs.energy-results }}
-  #   permissions:
-  #     actions: read
-  #   steps:
-  #     - name: Initialize Energy Estimation
-  #       uses: green-coding-berlin/eco-ci-energy-estimation@v1
-  #       with:
-  #         task: start-measurement
-  #         display-graph: false
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    outputs:
+      energy-estimation: ${{ steps.energy-results.outputs.energy-results }}
+    permissions:
+      actions: read
+    steps:
+      - name: Initialize Energy Estimation
+        uses: green-coding-berlin/eco-ci-energy-estimation@v1
+        with:
+          task: start-measurement
+          display-graph: false
 
-  #     - name: Get build artifacts
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #         name: dist-files
-  #     - name: Output contents
-  #       run: ls
-  #     - name: Output filename
-  #       run: echo "${{ needs.build.outputs.script-file }}"
-  #     - name: Deploy
-  #       run: echo "Deploying..."
+      - name: Get build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-files
+      - name: Output contents
+        run: ls
+      - name: Output filename
+        run: echo "${{ needs.build.outputs.script-file }}"
+      - name: Deploy
+        run: echo "Deploying..."
 
-  #     - name: "Create Energy Results"
-  #       id: energy-results
-  #       uses: ./.github/actions/eco-ci
-  #       with:
-  #         source-type: "CD"
-  #         application: ${{ env.app_name }}
-  #         namespace: ${{ env.namespace }}
-  #         owner: ${{ env.value_stream }}
-  #         infra: ${{ env.infra }}
-  #         region: ${{ env.aws_region }}
+      - name: "Create Energy Results"
+        id: energy-results
+        uses: ./.github/actions/eco-ci
+        with:
+          source-type: "CD"
+          application: ${{ env.app_name }}
+          namespace: ${{ env.namespace }}
+          owner: ${{ env.value_stream }}
+          infra: ${{ env.infra }}
+          region: ${{ env.aws_region }}

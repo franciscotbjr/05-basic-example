@@ -53,8 +53,6 @@ runs:
       run: |
         DATE_TIME=$(date +"%Y-%m-%d %H:%M:%S");
 
-        echo $DATE_TIME;
-
         IFS='| ' read -a arr <<< $ECO_CI_MEASUREMENT_TABLE_LINES;
 
         ENERGY_RESULTS="\"{ \
