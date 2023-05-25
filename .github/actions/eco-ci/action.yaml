@@ -23,6 +23,7 @@ runs:
     #     display-badge: false
     - name: Create Energy Results
       id: energyResults
+      shell: bash
       run: |
         IFS='| ' read -a arr <<< $ECO_CI_MEASUREMENT_TABLE_LINES;
 
