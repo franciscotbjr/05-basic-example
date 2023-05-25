@@ -1,0 +1,45 @@
+name: "Build eco-ci results"
+discription: "Create Energy Results"
+outputs:
+  energy-results:
+    discription: "The created Energy Results JSON"
+    value: ${{ steps.energyResults.outputs.energy-results }}
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Python Measurment
+      uses: green-coding-berlin/eco-ci-energy-estimation@v1
+      with:
+        task: get-measurement
+        label: "python setup"
+        send-data: false
+
+    # - name: Create Energy Results
+    #   uses: green-coding-berlin/eco-ci-energy-estimation@v1
+    #   with:
+    #     task: display-results
+    #     send-data: false
+    #     display-graph: false
+    #     display-badge: false
+    - name: Create Energy Results
+      id: energyResults
+      run: |
+        IFS='| ' read -a arr <<< $ECO_CI_MEASUREMENT_TABLE_LINES;
+
+        ENERGY_RESULTS=$( jq -n \
+            --arg cp ${arr[3]} \
+            --arg ej ${arr[4]} \
+            --arg pw ${arr[5]} \
+            --arg ji ${{github.job}} \
+            --arg rp ${{github.repository}} \
+            --arg wf $ECO_CI_WORKFLOW_ID \
+            --arg ri ${{ github.run_id }} \
+            --arg mn $ECO_CI_MODEL_NAME \
+            --arg cm $ECO_CI_CPU_MAKE \
+            --arg ch ${{ github.sha }} \
+            --arg br ${{ github.ref_name }} \
+            '{cpuAvgPercent: $cp, energyJoules: $ej, powerAvgWatts: $pw, repository: $rp, workflow: $wf, runId: $ri, jobId: $ji, commitHash: $ch, branch: $br, cpuModel: $mn, cpuMake: $cm}' | jq tostring );
+
+        echo "energy-results=$ENERGY_RESULTS" >> "$GITHUB_OUTPUT";
+
+        echo "curl -X POST \"http://api...\" -H \'Content-Type: application/json\' -d $ENERGY_RESULTS";
