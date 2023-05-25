@@ -51,33 +51,12 @@ runs:
       id: energy-results
       shell: bash
       run: |
-        IFS='| ' read -a arr <<< $ECO_CI_MEASUREMENT_TABLE_LINES
+        DATE_TIME=$(date +"%Y-%m-%d %T");
 
-        ENERGY_RESULTS=$( jq -n \
-            --arg st ${{ inputs.source-type }} \
-            --arg ap ${{ inputs.application }} \
-            --arg nf ${{ inputs.infra }} \
-            --arg rg ${{ inputs.region }} \
-            --arg ns ${{ inputs.namespace }} \
-            --arg wn ${{ inputs.owner }} \
-            --arg cp ${arr[3]} \
-            --arg ej ${arr[4]} \
-            --arg pw ${arr[5]} \
-            --arg ji ${{github.job}} \
-            --arg rp ${{github.repository}} \
-            --arg wf $ECO_CI_WORKFLOW_ID \
-            --arg ri ${{ github.run_id }} \
-            --arg mn $ECO_CI_MODEL_NAME \
-            --arg cm $ECO_CI_CPU_MAKE \
-            --arg ch ${{ github.sha }} \
-            --arg br ${{ github.ref_name }} \
-            '{sourceType: $st, application: $ap, infra: $nf, region: $rg, namespace: $ns, owner: $wn, datetime: $(date +"%Y-%m-%d %T"), data: {cpuAvgPercent: $cp, energyJoules: $ej, powerAvgWatts: $pw, repository: $rp, workflow: $wf, runId: $ri, jobId: $ji, commitHash: $ch, branch: $br, cpuModel: $mn, cpuMake: $cm}}' | jq tostring )
+        echo $DATE_TIME;
 
-        echo $ENERGY_RESULTS
 
-        echo "energy-results=$ENERGY_RESULTS" >> "$GITHUB_OUTPUT"
-
-        echo "curl -X POST \"http://api...\" -H \'Content-Type: application/json\' -d $ENERGY_RESULTS"
+        echo "energy-results=$DATE_TIME" >> "$GITHUB_OUTPUT";
 
   # send-ci-energy-estimation:
   #   name: Send Ci Energy Estimation
