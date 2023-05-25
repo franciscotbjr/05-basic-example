@@ -1,8 +1,8 @@
 name: "Build eco-ci results"
-discription: "Create Energy Results"
+description: "Create Energy Results"
 outputs:
   energy-results:
-    discription: "The created Energy Results JSON"
+    description: "The created Energy Results JSON"
     value: ${{ steps.energyResults.outputs.energy-results }}
 runs:
   using: "composite"
