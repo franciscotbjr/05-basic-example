@@ -4,10 +4,12 @@ runs:
   using: "composite"
   steps:
     - name: Cache dependencies
+      id: cache
       uses: actions/cache@v3
       with:
         path: ~/.npm
         key: deps-node-modudes-${{ hashFiles('**/package-lock.json') }}
     - name: Install dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
       shell: bash
       run: npm ci
