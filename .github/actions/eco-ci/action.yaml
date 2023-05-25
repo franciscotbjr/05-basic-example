@@ -53,6 +53,8 @@ runs:
       run: |
         IFS='| ' read -a arr <<< $ECO_CI_MEASUREMENT_TABLE_LINES
 
+        DATE_TIME=$(date +"%Y-%m-%d %T")
+
         ENERGY_RESULTS=$( jq -n \
             --arg st ${{ inputs.source-type }} \
             --arg ap ${{ inputs.application }} \
@@ -60,6 +62,7 @@ runs:
             --arg rg ${{ inputs.region }} \
             --arg ns ${{ inputs.namespace }} \
             --arg wn ${{ inputs.owner }} \
+            --arg dt $DATE_TIME \
             --arg cp ${arr[3]} \
             --arg ej ${arr[4]} \
             --arg pw ${arr[5]} \
@@ -71,7 +74,7 @@ runs:
             --arg cm $ECO_CI_CPU_MAKE \
             --arg ch ${{ github.sha }} \
             --arg br ${{ github.ref_name }} \
-            '{sourceType: $st, application: $ap, infra: $nf, region: $rg, namespace: $ns, owner: $wn, data: {cpuAvgPercent: $cp, energyJoules: $ej, powerAvgWatts: $pw, repository: $rp, workflow: $wf, runId: $ri, jobId: $ji, commitHash: $ch, branch: $br, cpuModel: $mn, cpuMake: $cm}}' | jq tostring )
+            '{sourceType: $st, application: $ap, infra: $nf, region: $rg, namespace: $ns, owner: $wn, datetime: $dt, data: {cpuAvgPercent: $cp, energyJoules: $ej, powerAvgWatts: $pw, repository: $rp, workflow: $wf, runId: $ri, jobId: $ji, commitHash: $ch, branch: $br, cpuModel: $mn, cpuMake: $cm}}' | jq tostring )
 
         echo $ENERGY_RESULTS
 
