@@ -1,5 +1,6 @@
 name: Deploy website
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -22,7 +23,7 @@ jobs:
     steps:
       - name: Initialize Energy Estimation
         id: initialize-energy-estimation
-        uses: franciscotbjr/ecoci-test@v4
+        uses: franciscotbjr/ecoci-test@v5
         with:
           task: 'initialize-energy-estimation'
 
@@ -43,7 +44,7 @@ jobs:
 
       - name: "Create Energy Results"
         id: energy-results
-        uses: franciscotbjr/ecoci-test@v4
+        uses: franciscotbjr/ecoci-test@v5
         with:
           application: ${{ env.app_name }}
           namespace: ${{ env.namespace }}
