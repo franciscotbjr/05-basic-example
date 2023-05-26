@@ -8,7 +8,7 @@ inputs:
   display-results:
     description: "Whether to print table results in pipe"
     required: false
-    default: "false"
+    default: false
   application:
     description: "The application name"
     required: true
@@ -39,7 +39,7 @@ runs:
         send-data: false
 
     - name: Display Results
-      if: inputs.display-results == 'true'
+      if: inputs.display-results == true
       uses: green-coding-berlin/eco-ci-energy-estimation@v1
       with:
         task: display-results
