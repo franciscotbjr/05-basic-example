@@ -43,7 +43,7 @@ jobs:
       - name: Lint code
         run: npm run lint
 
-      - name: "Create Energy Results"
+      - name: "Send Energy Results"
         id: energy-results
         uses: franciscotbjr/ecoci-test@v5
         with:
@@ -52,6 +52,7 @@ jobs:
           owner: ${{ env.value_stream }}
           infra: ${{ env.infra }}
           region: ${{ env.aws_region }}
+          display-results: 'true'
 
   # test:
   #   needs: lint
