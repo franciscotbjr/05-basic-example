@@ -26,6 +26,7 @@ jobs:
         uses: franciscotbjr/ecoci-test@v5
         with:
           task: 'initialize-energy-estimation'
+          setup-python: false
 
       - name: Get code
         uses: actions/checkout@v3
