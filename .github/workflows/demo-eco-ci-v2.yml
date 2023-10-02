@@ -1,0 +1,82 @@
+name: Teste Eco CI V2
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+env:
+  app_name: "teste-monitoring-service"
+  aws_region: "teste"
+  dockerfilePath: "dockerfiles/Dockerfile"
+  namespace: "green-monitoring"
+  value_stream: "demo"
+  infra: "test"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    # outputs:
+      # energy-estimation: ${{ steps.energy-results.outputs.energy-results }}
+    permissions:
+      actions: read
+    steps:
+      # - name: Initialize Energy Estimation
+      #   id: initialize-energy-estimation
+      #   uses: franciscotbjr/ecoci-test@v9
+      #   with:
+      #     task: 'initialize-energy-estimation'
+      #     setup-python: false
+
+      - name: Initialize Energy Estimation
+        uses: green-coding-berlin/eco-ci-energy-estimation@v2 # use hash or @vX here (See note below)
+        with:
+          task: start-measurement
+
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Get code
+        uses: actions/checkout@v3
+
+      - name: Load & cache dependencies
+        id: cache-deps
+        uses: ./.github/actions/cached-deps
+        with:
+          caching: 'false'
+
+      - name: Output
+        run: echo "Cache used? ${{ steps.cache-deps.outputs.used-cache }}"
+
+      - name: Lint code
+        run: npm run lint
+
+      - name: Checkout Repo Measurment
+        uses: green-coding-berlin/eco-ci-energy-estimation@v2
+        id: checkout-step
+        with:
+          task: get-measurement
+          label: 'repo checkout'
+  
+      - name: Print checkout data
+        run: |
+          echo "total json: ${{ steps.checkout-step.outputs.data-lap-json }}" 
+
+      - name: Show Energy Results
+        uses: green-coding-berlin/eco-ci-energy-estimation@v2 # use hash or @vX here (See note below)
+        with:
+          task: display-results
+
+      # - name: Send Energy Results
+      #   id: energy-results
+      #   uses: franciscotbjr/ecoci-test@v9
+      #   with:
+      #     application: ${{ env.app_name }}
+      #     namespace: ${{ env.namespace }}
+      #     owner: ${{ env.value_stream }}
+      #     infra: ${{ env.infra }}
+      #     region: ${{ env.aws_region }}
+      #     display-results: 'true'
