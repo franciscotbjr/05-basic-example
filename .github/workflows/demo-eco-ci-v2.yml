@@ -54,6 +54,7 @@ jobs:
         with:
           task: get-measurement
           label: 'repo checkout'
+          send-data: false
   
       - name: Print checkout data
         run: |
@@ -64,6 +65,7 @@ jobs:
         id: show-step
         with:
           task: display-results
+          send-data: false
 
       - name: Print checkout data
         run: |
