@@ -58,7 +58,8 @@ jobs:
   
       - name: Print checkout data
         run: |
-          echo "total json: ${{ steps.checkout-step.outputs.data-lap-json }}" 
+          echo "total json: " 
+          echo "${{ steps.checkout-step.outputs.data-lap-json }}" 
 
       - name: Show Energy Results
         uses: green-coding-berlin/eco-ci-energy-estimation@v2 # use hash or @vX here (See note below)
@@ -71,7 +72,7 @@ jobs:
         run: |
           echo "total json: ${{ steps.show-step.outputs.data-total-json }}" 
 
-          echo ${{ steps.show-step.outputs.data-total-json }} | jq -r '.energy_joules'
+          echo "${{ steps.show-step.outputs.data-total-json }}" | jq -r '.energy_joules'
 
       # - name: Send Energy Results
       #   id: energy-results
