@@ -55,11 +55,6 @@ jobs:
           task: get-measurement
           label: 'repo checkout'
           send-data: false
-  
-      - name: Print checkout data
-        run: |
-          echo "total json: " 
-          echo "${{ steps.checkout-step.outputs.data-lap-json }}" 
 
       - name: Show Energy Results
         uses: green-coding-berlin/eco-ci-energy-estimation@v2 # use hash or @vX here (See note below)
@@ -67,6 +62,8 @@ jobs:
         with:
           task: display-results
           send-data: false
+          display-table: true
+          display-graph: false
 
       - name: Print checkout data
         run: |
