@@ -69,7 +69,7 @@ jobs:
         run: |
           echo "total json: ${{ steps.show-step.outputs.data-total-json }}" 
 
-          echo '${{ steps.show-step.outputs.data-total-json }}' | jq -r '.energy_joules'
+          echo "energy_joules: $('${{ steps.show-step.outputs.data-total-json }}' | jq -r '.energy_joules')"
 
       # - name: Send Energy Results
       #   id: energy-results
