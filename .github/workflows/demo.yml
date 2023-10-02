@@ -23,7 +23,7 @@ jobs:
     steps:
       - name: Initialize Energy Estimation
         id: initialize-energy-estimation
-        uses: franciscotbjr/ecoci-test@v7
+        uses: franciscotbjr/ecoci-test@v8
         with:
           task: 'initialize-energy-estimation'
           setup-python: false
@@ -45,7 +45,7 @@ jobs:
 
       - name: Send Energy Results
         id: energy-results
-        uses: franciscotbjr/ecoci-test@v7
+        uses: franciscotbjr/ecoci-test@v8
         with:
           application: ${{ env.app_name }}
           namespace: ${{ env.namespace }}
@@ -64,7 +64,7 @@ jobs:
     steps:
       - name: Initialize Energy Estimation
         id: initialize-energy-estimation
-        uses: franciscotbjr/ecoci-test@v6
+        uses: franciscotbjr/ecoci-test@v8
         with:
           task: 'initialize-energy-estimation'
           setup-python: false
@@ -80,7 +80,7 @@ jobs:
 
       - name: "Send Energy Results"
         id: energy-results
-        uses: franciscotbjr/ecoci-test@v6
+        uses: franciscotbjr/ecoci-test@v8
         with:
           application: ${{ env.app_name }}
           namespace: ${{ env.namespace }}
@@ -100,7 +100,7 @@ jobs:
     steps:
       - name: Initialize Energy Estimation
         id: initialize-energy-estimation
-        uses: franciscotbjr/ecoci-test@v6
+        uses: franciscotbjr/ecoci-test@v8
         with:
           task: 'initialize-energy-estimation'
           setup-python: false
@@ -126,7 +126,7 @@ jobs:
 
       - name: "Send Energy Results"
         id: energy-results
-        uses: franciscotbjr/ecoci-test@v6
+        uses: franciscotbjr/ecoci-test@v8
         with:
           application: ${{ env.app_name }}
           namespace: ${{ env.namespace }}
@@ -145,7 +145,7 @@ jobs:
     steps:
       - name: Initialize Energy Estimation
         id: initialize-energy-estimation
-        uses: franciscotbjr/ecoci-test@v6
+        uses: franciscotbjr/ecoci-test@v8
         with:
           task: 'initialize-energy-estimation'
           setup-python: false
@@ -163,7 +163,7 @@ jobs:
 
       - name: "Send Energy Results"
         id: energy-results
-        uses: franciscotbjr/ecoci-test@v6
+        uses: franciscotbjr/ecoci-test@v8
         with:
           application: ${{ env.app_name }}
           namespace: ${{ env.namespace }}
