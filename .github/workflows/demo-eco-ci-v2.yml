@@ -1,9 +1,9 @@
 name: Teste Eco CI V2
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
+  # push:
+  #   branches:
+  #     - main
 
 env:
   app_name: "teste-monitoring-service"
