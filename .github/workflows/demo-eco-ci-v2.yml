@@ -58,6 +58,7 @@ jobs:
       - name: Print checkout data
         run: |
           echo "total json: ${{ steps.checkout-step.outputs.data-lap-json }}" 
+          echo "total json: ${{ steps.checkout-step.outputs.data-lap-json.energy_joules }}" 
 
       - name: Show Energy Results
         uses: green-coding-berlin/eco-ci-energy-estimation@v2 # use hash or @vX here (See note below)
