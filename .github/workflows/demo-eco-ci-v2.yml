@@ -61,12 +61,13 @@ jobs:
 
       - name: Show Energy Results
         uses: green-coding-berlin/eco-ci-energy-estimation@v2 # use hash or @vX here (See note below)
+        id: show-step
         with:
           task: display-results
 
       - name: Print checkout data
         run: |
-          echo "total json: ${{ steps.checkout-step.outputs.data-total-json }}" 
+          echo "total json: ${{ steps.show-step.outputs.data-total-json }}" 
 
       # - name: Send Energy Results
       #   id: energy-results
