@@ -33,14 +33,17 @@ jobs:
         with:
           task: start-measurement
 
+      - name: 'Checkout repository'
+        uses: actions/checkout@v3
+        with:
+          ref: 'dev'
+          submodules: 'true'
+
       - name: setup python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
           cache: 'pip'
-
-      - name: Get code
-        uses: actions/checkout@v3
 
       - name: Load & cache dependencies
         id: cache-deps
