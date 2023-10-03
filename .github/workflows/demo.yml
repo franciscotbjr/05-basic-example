@@ -19,7 +19,7 @@ jobs:
     outputs:
       energy-estimation: ${{ steps.energy-results.outputs.energy-results }}
     permissions:
-      actions: read
+      actions: write
     steps:
       - name: Initialize Energy Estimation
         id: initialize-energy-estimation
